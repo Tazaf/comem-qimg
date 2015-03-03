@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'qdimg' });
+  res.render('index', { title: 'qimg' });
 });
 
 module.exports = router;

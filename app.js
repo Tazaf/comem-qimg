@@ -1,11 +1,14 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+var bodyParser = require('body-parser'),
+    cookieParser = require('cookie-parser'),
+    express = require('express'),
+    favicon = require('serve-favicon'),
+    logger = require('morgan'),
+    multer = require('multer'),
+    path = require('path');
 
-var routes = require('./routes/index');
+var routes = require('./routes/index'),
+    imageRoutes = require('./routes/images'),
+    tokenRoutes = require('./routes/tokens');
 
 var app = express();
 
@@ -22,7 +25,18 @@ app.use(cookieParser());
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// file upload configuration
+app.use(multer({
+  inMemory: true,
+  limits: {
+    fieldSize: 2097152, // 2 MB
+    files: 1
+  }
+}));
+
 app.use('/', routes);
+app.use('/', imageRoutes);
+app.use('/', tokenRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
