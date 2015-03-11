@@ -3,6 +3,8 @@ var _ = require('underscore'),
     Image = require('../lib/image'),
     uuid = require('node-uuid');
 
+var baseUrl = process.env.APP_URL || 'http://localhost:' + (process.env.PORT || 3000);
+
 router.get('/api/images', function(req, res) {
   Image.findAll({ order: [['createdAt', 'DESC']] }).then(function(images) {
     res.send(_.map(images, function(image) {
@@ -39,7 +41,7 @@ router.post('/api/images', function(req, res) {
   }
 
   Image.create(data).then(function(image) {
-    res.send({ id: image.apiId });
+    res.send({ id: image.apiId, url: baseUrl + '/images/' + image.apiId + '.png' });
   }, function(err) {
     console.error(err);
     res.status(500).send('An unexpected error occurred.');
