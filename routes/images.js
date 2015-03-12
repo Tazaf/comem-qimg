@@ -20,7 +20,6 @@ router.get('/api/images', auth.authenticate, function(req, res) {
   }
 
   Image.findAll(findOptions).then(function(images) {
-    p
     res.send(_.map(images, function(image) {
       return serializeImage(image, req);
     }));
@@ -37,7 +36,7 @@ router.post('/api/images', auth.authenticate, auth.requireUser, function(req, re
 
   if (req.is('application/json')) {
     if (!req.body.data) {
-      return utils.sendError(422, 'The "data" property should contain the base64-encoded image data.', res);
+      return utils.sendError(422, 'The "data" property must contain the base64-encoded image data.', res);
     }
     data.imageData = req.body.data;
     data.imageSize = Buffer.byteLength(data.imageData, 'base64');
@@ -52,7 +51,7 @@ router.post('/api/images', auth.authenticate, auth.requireUser, function(req, re
   }
 
   Image.create(data).then(function(image) {
-    res.send(serializeImage(image));
+    res.send(serializeImage(image, req));
   }, _.partial(utils.sendUnexpectedError, res));
 });
 

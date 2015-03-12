@@ -1,0 +1,38 @@
+description: Authentication management resource.
+get:
+  description: |
+    Retrieve the list of authentication tokens.
+  is: [ admin_auth ]
+  responses:
+    200:
+      body:
+        application/json:
+          example: !include tokens/get_tokens_res.json
+post:
+  description: |
+    Create a user authentication token.
+    This token can be used to upload and list images as a user.
+
+    Tokens are only valid for a limited time.
+    You can specify an optional `lifetime` property (in seconds) which defaults to 2,592,000 (30 days).
+    It must be at least 1 second and at most 31,536,000 seconds (365 days).
+  is: [ admin_auth ]
+  body:
+    application/json:
+      example: !include tokens/post_tokens_req.json
+  responses:
+    201:
+      body:
+        application/json:
+          example: !include tokens/post_tokens_res.json
+    422:
+      description: |
+        The lifetime of the token is not an integer, is less than one, or is more than 365 days.
+      body:
+        text/plain:
+          example: |
+            The "lifetime" property must be an integer.
+
+            The "lifetime" property must be greater than zero.
+
+            The "lifetime" property must be less than or equal to 31,536,000 (365 days).

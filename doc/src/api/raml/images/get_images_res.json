@@ -1,0 +1,20 @@
+[
+  {
+    "createdAt": "2015-03-12T19:54:01.284Z",
+    "id": "2f0f532e-44cc-411a-837c-a0061b2be7fb",
+    "tokenId": "fbd996d8-9dcb-4473-816a-be3b85972c75",
+    "url": "https://api.example.com/images/2f0f532e-44cc-411a-837c-a0061b2be7fb.png"
+  },
+  {
+    "createdAt": "2015-03-12T19:53:37.900Z",
+    "id": "e30e953f-90d9-4433-b544-efb0b7de0c53",
+    "tokenId": "fbd996d8-9dcb-4473-816a-be3b85972c75",
+    "url": "https://api.example.com/images/e30e953f-90d9-4433-b544-efb0b7de0c53.png"
+  },
+  {
+    "createdAt": "2015-03-12T18:09:54.024Z",
+    "id": "51f40f44-bd52-49cc-bc65-a8007dbcbda5",
+    "tokenId": "fbd996d8-9dcb-4473-816a-be3b85972c75",
+    "url": "https://api.example.com/images/51f40f44-bd52-49cc-bc65-a8007dbcbda5.png"
+  }
+]

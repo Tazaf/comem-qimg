@@ -1,1 +1,5 @@
+/.grunt
+/doc/build
+/doc/node_modules
+/doc/raml.json
 /node_modules

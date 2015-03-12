@@ -1,0 +1,56 @@
+description: Image upload resource.
+get:
+  description: |
+    Retrieve the list of uploaded images.
+
+    If you are authenticated as a user, this will return only the images you uploaded and you will not see the `tokenId` property.
+  is: [ any_auth ]
+  responses:
+    200:
+      body:
+        application/json:
+          example: !include images/get_images_res.json
+post:
+  description: |
+    Upload an image.
+
+    Use the `application/json` content type to upload base64-encoded data.
+
+    Use the `multipart/form-data` content type to upload an image file.
+    Send the image file as the `image` field.
+  is: [ admin_auth ]
+  body:
+    application/json:
+      example: !include images/post_images_req.json
+    multipart/form-data:
+      example: |
+        Content-Type: multipart/form-data; boundary=AaB03x
+
+        --AaB03x
+        Content-Disposition: form-data; name="image"; filename="image.png"
+        Content-Type: image/png
+
+        ... contents of image.png ...
+        --AaB03x--
+  responses:
+    201:
+      body:
+        application/json:
+          example: !include images/post_images_res.json
+    415:
+      description: The body of the request is in an unsupported format.
+      body:
+        text/plain:
+          example: The request must have content type application/json or multipart/form-data.
+    422:
+      description: |
+        There are errors in the body of the request.
+
+        For the application/json content type, this happens if the "data" property is missing.
+        For the multipart/form-data content type, this happens if the "image" field is not set.
+      body:
+        text/plain:
+          example: |
+            The "data" property must contain the base64-encoded image data.
+
+            The "image" field is not set.
