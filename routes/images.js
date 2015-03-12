@@ -1,11 +1,12 @@
 var _ = require('underscore'),
+    auth = require('../lib/auth'),
     router = module.exports = require('express').Router(),
     Image = require('../lib/image'),
     uuid = require('node-uuid');
 
 var baseUrl = process.env.APP_URL || 'http://localhost:' + (process.env.PORT || 3000);
 
-router.get('/api/images', function(req, res) {
+router.get('/api/images', auth.authenticateUser, function(req, res) {
   Image.findAll({ order: [['createdAt', 'DESC']] }).then(function(images) {
     res.send(_.map(images, function(image) {
       return {
