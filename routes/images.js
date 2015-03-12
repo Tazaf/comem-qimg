@@ -61,13 +61,34 @@ router.post('/api/images', auth.authenticate, auth.requireUser, function(req, re
   }, _.partial(utils.sendUnexpectedError, res));
 });
 
+router.delete('/api/images/:id', auth.authenticate, function(req, res) {
+
+  var where = {
+    apiId: req.params.id
+  };
+
+  if (!req.authToken.admin) {
+    where.tokenId = req.authToken.id;
+  }
+
+  Image.find({ where: where }).then(function(image) {
+    if (image) {
+      image.destroy().then(function() {
+        res.sendStatus(204);
+      }, _.partial(utils.sendUnexpectedError, res));
+    } else {
+      utils.sendError(404, 'No image found with ID "' + req.params.id + '".', res);
+    }
+  }, _.partial(utils.sendUnexpectedError, res));
+});
+
 router.get('/images/:id.png', function(req, res) {
   Image.find({ where: { apiId: req.params.id } }).then(function(image) {
     if (image) {
       res.set('Content-Type', 'image/png');
       res.send(new Buffer(image.imageData, 'base64'));
     } else {
-      utils.sendError(404, 'No image found.', res);
+      utils.sendError(404, 'No image found with ID "' + req.params.id + '".', res);
     }
   }, _.partial(utils.sendUnexpectedError, res));
 });

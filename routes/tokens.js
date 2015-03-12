@@ -45,6 +45,18 @@ router.post('/api/tokens', auth.authenticate, auth.requireAdmin, function(req, r
   }, _.partial(utils.sendUnexpectedError, res));
 });
 
+router.delete('/api/tokens/:id', auth.authenticate, auth.requireAdmin, function(req, res) {
+  Token.find({ where: { apiId: req.params.id } }).then(function(token) {
+    if (token) {
+      token.destroy().then(function() {
+        res.sendStatus(204);
+      }, _.partial(utils.sendUnexpectedError, res));
+    } else {
+      utils.sendError(404, 'No token found with ID "' + req.params.id + '".', res);
+    }
+  }, _.partial(utils.sendUnexpectedError, res));
+});
+
 function serializeToken(token) {
 
   var serialized = {

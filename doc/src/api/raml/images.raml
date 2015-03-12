@@ -66,3 +66,18 @@ post:
             The "data" property must contain the base64-encoded image data.
 
             The "image" field is not set.
+/{imageId}:
+  delete:
+    description: |
+      Delete an uploaded image.
+
+      If you are authenticated as a user, you must be the one who uploaded the image.
+    is: [ any_auth ]
+    responses:
+      204:
+        description: The token and associated images have been successfully deleted.
+      404:
+        description: No image correspond to the specified ID, or someone else uploaded that image.
+        body:
+          text/plain:
+            example: No image found with ID "682f1d0e-b243-4ed0-9ae2-66e9b4b51193".

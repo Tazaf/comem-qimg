@@ -1,4 +1,6 @@
-description: Authentication management resource.
+description: |
+  Token management resource.
+  The administrator can create tokens that users can use for authentication with the image resources.
 get:
   description: |
     Retrieve the list of authentication tokens.
@@ -47,3 +49,18 @@ post:
             The "name" property must be a string.
 
             The "name" property must not be longer than 50 characters.
+/{tokenId}:
+  delete:
+    description: |
+      Delete an authentication token.
+
+      **All images linked to that user will be purged as well.**
+    is: [ admin_auth ]
+    responses:
+      204:
+        description: The token and associated images have been successfully deleted.
+      404:
+        description: No token correspond to the specified ID.
+        body:
+          text/plain:
+            example: No token found with ID "cf8eb01b-0b39-4355-9226-7a858f5d6172".
