@@ -14,7 +14,7 @@ var app = require('../app'),
  * Check configuration.
  */
 
-if (process.env.NODE_ENV == 'production' && config.adminToken == 'admin') {
+if (config.env == 'production' && config.adminToken == 'admin') {
   throw new Error('The $QIMG_ADMIN_TOKEN environment variable must contain the authentication token for the qimg administrator.');
 }
 
@@ -22,7 +22,7 @@ if (process.env.NODE_ENV == 'production' && config.adminToken == 'admin') {
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(config.port);
 app.set('port', port);
 
 /**
