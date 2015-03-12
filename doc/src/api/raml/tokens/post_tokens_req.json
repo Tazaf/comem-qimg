@@ -1,3 +1,4 @@
 {
-  "lifetime": 2592000
+  "lifetime": 2592000,
+  "name": "foo"
 }

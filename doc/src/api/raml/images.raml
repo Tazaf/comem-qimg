@@ -18,6 +18,13 @@ post:
 
     Use the `multipart/form-data` content type to upload an image file.
     Send the image file as the `image` field.
+
+    Images cannot be larger than 2MB.
+    (When sending base64-encoded image data, the entire JSON payload cannot be larger than 2MB.)
+
+    ## Quota
+
+    If you have reached the image quota (10 by default), your oldest uploaded images will be purged.
   is: [ admin_auth ]
   body:
     application/json:
@@ -37,6 +44,11 @@ post:
       body:
         application/json:
           example: !include images/post_images_res.json
+    413:
+      description: The uploaded image is too large.
+      body:
+        text/plain:
+          example: The uploaded image is too large (the limit is 2MB).
     415:
       description: The body of the request is in an unsupported format.
       body:

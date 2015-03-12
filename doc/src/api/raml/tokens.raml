@@ -16,6 +16,8 @@ post:
     Tokens are only valid for a limited time.
     You can specify an optional `lifetime` property (in seconds) which defaults to 2,592,000 (30 days).
     It must be at least 1 second and at most 31,536,000 seconds (365 days).
+
+    You can provide an optional `name` property (up to 50 characters long).
   is: [ admin_auth ]
   body:
     application/json:
@@ -27,7 +29,12 @@ post:
           example: !include tokens/post_tokens_res.json
     422:
       description: |
-        The lifetime of the token is not an integer, is less than one, or is more than 365 days.
+        There are errors in the body of the request.
+
+        This can happen if
+
+        * the lifetime is not an integer, is less than one, or is more than 365 days;
+        * the name is not a string, or longer than 50 characters.
       body:
         text/plain:
           example: |
@@ -36,3 +43,7 @@ post:
             The "lifetime" property must be greater than zero.
 
             The "lifetime" property must be less than or equal to 31,536,000 (365 days).
+
+            The "name" property must be a string.
+
+            The "name" property must not be longer than 50 characters.

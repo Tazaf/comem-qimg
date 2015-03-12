@@ -38,12 +38,16 @@ router.post('/api/images', auth.authenticate, auth.requireUser, function(req, re
     if (!req.body.data) {
       return utils.sendError(422, 'The "data" property must contain the base64-encoded image data.', res);
     }
+
     data.imageData = req.body.data;
     data.imageSize = Buffer.byteLength(data.imageData, 'base64');
   } else if (req.is('multipart/form-data')) {
     if (!req.files || !req.files.image) {
       return utils.sendError(422, 'The "image" field is not set.', res);
+    } else if (req.files.image.truncated) {
+      return utils.sendError(413, 'The uploaded image is too large (the limit is 2MB).', res);
     }
+
     data.imageData = req.files.image.buffer.toString('base64');
     data.imageSize = Buffer.byteLength(data.imageData, 'base64');
   } else {
@@ -51,7 +55,9 @@ router.post('/api/images', auth.authenticate, auth.requireUser, function(req, re
   }
 
   Image.create(data).then(function(image) {
-    res.send(serializeImage(image, req));
+    purgeImages(req.authToken).then(function() {
+      res.send(serializeImage(image, req));
+    }, _.partial(utils.sendUnexpectedError, res));
   }, _.partial(utils.sendUnexpectedError, res));
 });
 
@@ -66,10 +72,26 @@ router.get('/images/:id.png', function(req, res) {
   }, _.partial(utils.sendUnexpectedError, res));
 });
 
+function purgeImages(authToken) {
+  return Image.findOne({ tokenId: authToken.id, order: '"createdAt" DESC', offset: 10 }).then(function(image) {
+    if (image) {
+      return Image.destroy({
+        where: {
+          tokenId: authToken.id,
+          createdAt: {
+            $lte: image.createdAt
+          }
+        }
+      });
+    }
+  });
+}
+
 function serializeImage(image, req) {
 
   var serialized = {
     id: image.apiId,
+    size: image.imageSize,
     url: config.appUrl + '/images/' + image.apiId + '.png',
     createdAt: image.createdAt.toISOString()
   };

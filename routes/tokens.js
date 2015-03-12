@@ -25,6 +25,12 @@ router.post('/api/tokens', auth.authenticate, auth.requireAdmin, function(req, r
     return utils.sendError(422, 'The "lifetime" property must be less than or equal to 31,536,000 (365 days).', res);
   }
 
+  if (req.body.name !== undefined && typeof(req.body.name) != 'string') {
+    return utils.sendError(422, 'The "name" property must be a string.', res);
+  } else if (req.body.name && req.body.name.length > 50) {
+    return utils.sendError(422, 'The "name" property must not be longer than 50 characters.', res);
+  }
+
   var now = new Date(),
       expiresAt = new Date(now.getTime() + lifetime * 1000);
 
