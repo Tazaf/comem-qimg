@@ -1,5 +1,2 @@
-/.grunt
-/doc/build
-/doc/node_modules
-/doc/raml.json
+/docs.config.js
 /node_modules

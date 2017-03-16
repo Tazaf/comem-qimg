@@ -1,4 +1,4 @@
-#%RAML 0.8
+#%RAML 1.0
 ---
 title: qimg API
 baseUri: private
@@ -7,9 +7,9 @@ protocols: [HTTPS]
 mediaType: application/json
 
 traits:
-  - any_auth: !include _traits/any_auth.raml
-  - admin_auth: !include _traits/admin_auth.raml
-  - user_auth: !include _traits/user_auth.raml
+  any_auth: !include _traits/any_auth.raml
+  admin_auth: !include _traits/admin_auth.raml
+  user_auth: !include _traits/user_auth.raml
 
 /images: !include images.raml
 /tokens: !include tokens.raml

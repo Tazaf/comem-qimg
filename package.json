@@ -2,10 +2,14 @@
   "name": "qimg",
   "version": "0.1.0",
   "private": true,
-  "engines": {
-    "node": "4.x.x"
-  },
   "scripts": {
+    "all": "concurrently \"npm run api:dev\" \"npm run docs:serve\" \"npm run docs:watch\"",
+    "api:dev": "nodemon",
+    "docs": "raml2html -i raml/index.raml -o docs/index.html && echo Done",
+    "docs:all": "npm run docs && npm run docs:dev",
+    "docs:dev": "concurrently \"npm run docs:serve\" \"npm run docs:watch\"",
+    "docs:serve": "node docs.serve.js",
+    "docs:watch": "onchange \"raml/**/*.raml\" -- npm run docs",
     "start": "node ./bin/www"
   },
   "dependencies": {
@@ -27,10 +31,13 @@
     "underscore": "^1.8.2"
   },
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-bump": "^0.3.0",
-    "grunt-contrib-jshint": "^0.11.0",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-gh-pages": "^0.10.0"
+    "concurrently": "^3.4.0",
+    "live-server": "^1.2.0",
+    "nodemon": "^1.11.0",
+    "onchange": "^3.2.1",
+    "raml2html": "^5.1.0"
+  },
+  "engines": {
+    "node": "6.x.x"
   }
 }
