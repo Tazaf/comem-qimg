@@ -32,7 +32,7 @@ router.post('/api/tokens', auth.authenticate, auth.requireAdmin, function(req, r
   }
 
   var now = new Date(),
-      expiresAt = new Date(now.getTime() + lifetime * 1000);
+      expiresAt = new Date(now.getTime() + parseInt(lifetime, 10) * 1000);
 
   Token.create({
     apiId: uuid.v4(),
@@ -75,5 +75,5 @@ function serializeToken(token) {
 }
 
 function isInteger(n) {
-  return n === +n && n === (n|0);
+  return !isNaN(parseInt(n, 10));
 }
