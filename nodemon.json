@@ -1,0 +1,17 @@
+{
+  "ignore": [
+    ".git",
+    "docs",
+    "node_modules",
+    "public",
+    "raml",
+    "views"
+  ],
+  "script": "bin/www",
+  "watch": [
+    "app.js",
+    "bin/www",
+    "lib/**/*.js",
+    "routes/**/*.js"
+  ]
+}
