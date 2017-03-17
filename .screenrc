@@ -4,5 +4,5 @@ screen -t vim 0
 stuff "\${PROJECT_EDITOR-\$EDITOR}\012"
 screen -t zsh 1
 screen -t run 2
-stuff "nodemon -w bin -w lib -w routes bin/www"
+stuff "npm run api:dev"
 select vim
