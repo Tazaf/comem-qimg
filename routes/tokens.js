@@ -41,7 +41,7 @@ router.post('/api/tokens', auth.authenticate, auth.requireAdmin, function(req, r
     createdAt: now,
     expiresAt: expiresAt
   }).then(function(token) {
-    res.send(serializeToken(token));
+    res.status(201).send(serializeToken(token));
   }, _.partial(utils.sendUnexpectedError, res));
 });
 

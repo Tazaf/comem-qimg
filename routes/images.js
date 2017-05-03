@@ -56,7 +56,7 @@ router.post('/api/images', auth.authenticate, auth.requireUser, function(req, re
 
   Image.create(data).then(function(image) {
     purgeImages(req.authToken).then(function() {
-      res.send(serializeImage(image, req));
+      res.status(201).send(serializeImage(image, req));
     }, _.partial(utils.sendUnexpectedError, res));
   }, _.partial(utils.sendUnexpectedError, res));
 });
