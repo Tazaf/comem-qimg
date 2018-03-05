@@ -34,6 +34,6 @@
     "raml2html": "^5.1.0"
   },
   "engines": {
-    "node": "6.x.x"
+    "node": "6.x"
   }
 }
