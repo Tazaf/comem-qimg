@@ -1,4 +1,5 @@
 var bodyParser = require('body-parser'),
+    cors = require('cors'),
     express = require('express'),
     logger = require('morgan'),
     multer = require('multer'),
@@ -9,6 +10,8 @@ var routes = require('./routes/index'),
     tokenRoutes = require('./routes/tokens');
 
 var app = express();
+
+app.use(cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
