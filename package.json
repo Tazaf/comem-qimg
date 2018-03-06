@@ -1,6 +1,6 @@
 {
   "name": "qimg",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "all": "concurrently \"npm run api:dev\" \"npm run docs:serve\" \"npm run docs:watch\"",
