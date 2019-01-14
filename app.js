@@ -23,11 +23,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
+var maxImageSize = process.env.QIMG_MAX_IMAGE_SIZE ? parseInt(process.env.QIMG_MAX_IMAGE_SIZE, 10) : 2097152; // 2 MB
+
 // file upload configuration
 app.use(multer({
   inMemory: true,
   limits: {
-    fileSize: 2097152, // 2 MB
+    fileSize: maxImageSize,
     files: 1
   }
 }));
