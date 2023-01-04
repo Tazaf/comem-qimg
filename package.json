@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "DEBUG=app:* nodemon",
-    "doc": "apidoc -i ./ -o ./doc",
-    "migrate": "npx prisma migrate",
+    "deploy": "npx prisma migrate && apidoc -i ./ -o ./doc",
     "start": "node ./bin/start"
   },
   "dependencies": {
@@ -17,11 +16,11 @@
     "http-errors": "^2.0.0",
     "morgan": "~1.10.0",
     "multer": "^1.4.5-lts.1",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "apidoc": "^0.53.1",
+    "prisma": "^4.8.0"
   },
   "devDependencies": {
-    "apidoc": "^0.53.1",
-    "nodemon": "^2.0.20",
-    "prisma": "^4.8.0"
+    "nodemon": "^2.0.20"
   }
 }
