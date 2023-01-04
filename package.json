@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "DEBUG=app:* nodemon",
     "doc": "apidoc -i ./ -o ./doc",
+    "migrate": "npx prisma migrate",
     "start": "node ./bin/start"
   },
   "dependencies": {
