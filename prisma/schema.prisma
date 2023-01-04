@@ -1,0 +1,28 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Token {
+  id        Int      @id @default(autoincrement())
+  appID     String   @unique @db.VarChar(36)
+  token     String   @unique @db.VarChar(255)
+  name      String   @db.VarChar(50)
+  createdAt DateTime
+  expiresAt DateTime
+  images    Image[]
+}
+
+model Image {
+  id        Int      @id @default(autoincrement())
+  appID     String   @unique @db.VarChar(36)
+  imageData String   @db.Text
+  imageSize Int
+  createdAt DateTime
+  token     Token    @relation(fields: [tokenID], references: [id], onDelete: Cascade)
+  tokenID   Int
+}

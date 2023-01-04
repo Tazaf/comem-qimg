@@ -1,73 +1,37 @@
-var bodyParser = require('body-parser'),
-    cors = require('cors'),
-    express = require('express'),
-    logger = require('morgan'),
-    multer = require('multer'),
-    path = require('path');
+import express from "express";
+import { PrismaClient } from "@prisma/client";
+import createError from "http-errors";
+import logger from "morgan";
+import cors from "cors";
 
-var routes = require('./routes/index'),
-    imageRoutes = require('./routes/images'),
-    tokenRoutes = require('./routes/tokens');
+import imageRouter from "./routes/images.js";
+import tokenRouter from "./routes/tokens.js";
 
-var app = express();
+export const prisma = new PrismaClient();
+const app = express();
 
+app.use(logger("dev"));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
-app.use(logger('dev'));
-app.use(bodyParser.json({ limit: '2mb' }));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(require('stylus').middleware(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'public')));
-
-var maxImageSize = process.env.QIMG_MAX_IMAGE_SIZE ? parseInt(process.env.QIMG_MAX_IMAGE_SIZE, 10) : 2097152; // 2 MB
-
-// file upload configuration
-app.use(multer({
-  inMemory: true,
-  limits: {
-    fileSize: maxImageSize,
-    files: 1
-  }
-}));
-
-app.use('/', routes);
-app.use('/', imageRoutes);
-app.use('/', tokenRoutes);
+app.use("/api/images", imageRouter);
+app.use("/api/tokens", tokenRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+app.use((req, res, next) => {
+  next(createError(404));
 });
 
-// error handlers
+// error handler
+app.use((err, req, res, next) => {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get("env") === "development" ? err : {};
 
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
-    });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
+  // Send the error status
+  res.status(err.status || 500);
+  res.send(err.message);
 });
 
-
-module.exports = app;
+export default app;
