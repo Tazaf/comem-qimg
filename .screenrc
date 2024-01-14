@@ -1,8 +1,0 @@
-source $HOME/.screenrc
-
-screen -t vim 0
-stuff "\${PROJECT_EDITOR-\$EDITOR}\012"
-screen -t zsh 1
-screen -t run 2
-stuff "npm run api:dev"
-select vim

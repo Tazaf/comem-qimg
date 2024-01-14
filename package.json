@@ -2,39 +2,28 @@
   "name": "qimg",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "all": "concurrently \"npm run api:dev\" \"npm run docs:serve\" \"npm run docs:watch\"",
-    "api:dev": "nodemon",
-    "docs": "raml2html -i raml/index.raml -o docs/index.html && echo Done",
-    "docs:all": "npm run docs && npm run docs:dev",
-    "docs:dev": "concurrently \"npm run docs:serve\" \"npm run docs:watch\"",
-    "docs:serve": "node docs.serve.js",
-    "docs:watch": "onchange \"raml/**/*.raml\" -- npm run docs",
-    "start": "node ./bin/www"
+    "dev": "DEBUG=app:* nodemon",
+    "deploy": "run-s migrate doc",
+    "migrate": "npx prisma migrate deploy",
+    "doc": "apidoc -i ./ -o ./doc",
+    "start": "node ./bin/start"
   },
   "dependencies": {
-    "body-parser": "^1.17.1",
-    "cors": "^2.8.4",
-    "debug": "^2.6.3",
-    "express": "^4.15.2",
-    "jade": "~1.9.1",
-    "morgan": "~1.8.1",
-    "multer": "^0.1.8",
-    "node-uuid": "^1.4.2",
-    "pg": "^6.1.4",
-    "pg-hstore": "^2.3.1",
-    "sequelize": "^3.30.2",
-    "stylus": "0.42.3",
-    "underscore": "^1.8.2"
+    "@prisma/client": "^4.8.0",
+    "apidoc": "^0.53.1",
+    "cors": "^2.8.5",
+    "debug": "~4.3.4",
+    "express": "~4.18.1",
+    "http-errors": "^2.0.0",
+    "morgan": "~1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "prisma": "^4.8.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "concurrently": "^3.4.0",
-    "live-server": "^1.2.0",
-    "nodemon": "^1.11.0",
-    "onchange": "^3.2.1",
-    "raml2html": "^5.1.0"
-  },
-  "engines": {
-    "node": "6.x"
+    "nodemon": "^2.0.20",
+    "npm-run-all": "^4.1.5"
   }
 }
